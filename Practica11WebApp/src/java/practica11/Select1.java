@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import DBC.DbConnection;
 
 /**
  *
@@ -46,12 +47,14 @@ public class Select1 extends HttpServlet {
             try
             {
                 // create a mysql database connection
-                String myDriver = "com.mysql.cj.jdbc.Driver";
-                String myUrl = "jdbc:mysql://localhost/practicas";
-                Class.forName(myDriver);
-                Connection conn = DriverManager.getConnection(myUrl, "root", "1234");
-
-                Statement st = conn.createStatement();
+                //String myDriver = "com.mysql.cj.jdbc.Driver";
+                //String myUrl = "jdbc:mysql://localhost/practicas";
+                //Class.forName(myDriver);
+                //Connection conn = DriverManager.getConnection(myUrl, "root", "1234");
+                DbConnection conn = new DbConnection();
+                Connection condb = conn.getDbConnected();
+                Statement st = condb.createStatement();
+                //Statement st = conn.createStatement();
                 String qry = "SELECT * FROM users";
                 System.out.println(qry);
                 //st.executeUpdate(qry);
@@ -64,14 +67,14 @@ public class Select1 extends HttpServlet {
                     out.println("<h1>Servlet Select at " + id+ "-" +firstName+ "-" +lastName + "</h1>");
                     System.out.format("%s, %s, %s\n", id, firstName, lastName);
                 }
-                conn.close();
             }
-            catch (ClassNotFoundException | SQLException e)
+            catch (SQLException e)
             {
               System.err.println("Got an exception!");
               System.err.println(e.getMessage());
             }
             out.println("</body>");
+            out.println("<a href=\"index.html\"> index</a>");
             out.println("</html>");
         }
     }

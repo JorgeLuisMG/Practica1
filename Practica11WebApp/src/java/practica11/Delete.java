@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import DBC.DbConnection;
 
 /**
  *
@@ -45,11 +46,14 @@ public class Delete extends HttpServlet {
             try
             {
               // create a mysql database connection
-              String myDriver = "com.mysql.cj.jdbc.Driver";
-              String myUrl = "jdbc:mysql://localhost/practicas";
-              Class.forName(myDriver);
-              Connection conn = DriverManager.getConnection(myUrl, "root", "1234");
-              Statement st = conn.createStatement();
+              //String myDriver = "com.mysql.cj.jdbc.Driver";
+              //String myUrl = "jdbc:mysql://localhost/practicas";
+              //Class.forName(myDriver);
+              //Connection conn = DriverManager.getConnection(myUrl, "root", "1234");
+              DbConnection conn = new DbConnection();
+              Connection condb = conn.getDbConnected();
+              Statement st = condb.createStatement();
+              //Statement st = conn.createStatement();
               String qry = "DELETE FROM users WHERE first_name =" + "'"+ fn + "'";
               System.out.println(qry);
               st.executeUpdate(qry);
@@ -60,6 +64,7 @@ public class Delete extends HttpServlet {
               System.err.println(e.getMessage());
             }
             out.println("</body>");
+            out.println("<a href=\"index.html\"> index</a>");
             out.println("</html>");
         }
     }
@@ -102,5 +107,4 @@ public class Delete extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import DBC.DbConnection;
 
 /**
  *
@@ -43,25 +44,24 @@ public class Update extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet Update at " + request.getContextPath() + "</h1>");
-                       String fn = request.getParameter("fn");
-                       String ln = request.getParameter("ln");
-                       String nfn = request.getParameter("nfn");
+            String fn = request.getParameter("fn");
+            String ln = request.getParameter("ln");
+            String nfn = request.getParameter("nfn");
             try
                 {
-                  // create a mysql database connection
-                  String myDriver = "com.mysql.cj.jdbc.Driver";
-                  String myUrl = "jdbc:mysql://localhost/practicas";
-                  Class.forName(myDriver);
-                try (Connection conn = DriverManager.getConnection(myUrl, "root", "1234")) {
-                    //DbConnection conn =  new DbConnection();
-                     //Connection condb = conn.getDbConnected();
-                     Statement st = conn.createStatement();
+                    // create a mysql database connection
+                    //String myDriver = "com.mysql.cj.jdbc.Driver";
+                    //String myUrl = "jdbc:mysql://localhost/practicas";
+                    //Class.forName(myDriver);
+                    //Connection conn = DriverManager.getConnection(myUrl, "root", "1234");
+                    DbConnection conn = new DbConnection();
+                    Connection condb = conn.getDbConnected();
+                    Statement st = condb.createStatement();
+                    //Statement st = conn.createStatement();
                     String qry = "Update users SET first_name ='"+ nfn + "', last_name = '"+ ln + "'" + "WHERE first_name = '"+ fn + "'"; 
                     System.out.println("******************* " + qry);
-                    
                     // note that i'm leaving "date_created" out of this insert statement
                     st.executeUpdate(qry);
-                }
                 }
                 catch (Exception e)
                 {
@@ -69,6 +69,7 @@ public class Update extends HttpServlet {
                   System.err.println(e.getMessage());
                 }
             out.println("</body>");
+            out.println("<a href=\"index.html\"> index</a>");
             out.println("</html>");
         }
     }
@@ -111,5 +112,4 @@ public class Update extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
